@@ -192,7 +192,7 @@
   Public MplexRTemp_C 'AM25T:CR3000, AG:AG, HI:7H, LO:7L, EX:Vx2, RES:C1, CLK:C2, AG:G, +12:12V
   Public AirTemp_3m 'Read - 10H, Black - 10L, Green - 11H, Jumper to Black - 11L, Clear - G, White - 12V
   Public RH_3m 
-  Public Evap_Depth 'White - Vx3, Red - SE16(8H), Black - AG
+  Public Evap_Depth, Evap_offset 'White - Vx3, Red - SE16(8H), Black - AG
   Public WindDir 'BrHalf: Red - SE15(8L), Black - Vx1, White - AG, Clear - AG
   Public WS_5m 'Black - P2, White - AG, Clear - AG
   Public Rain_mm 'P3
@@ -350,6 +350,7 @@ DataTable(Daily,True,-1)
   	Minimum(1,AirTemp_3m,FP2,False,True)
   	Maximum(1,WS_5m,FP2,False,True)
   	Average(1,WS_5m,FP2,False)
+  	Sample(1,evap_offset,fp2)
   	Sample(1,p_sig,ieee4)
 EndTable
 
@@ -361,6 +362,7 @@ EndTable
 
 BeginProg
   Signature
+  evap_offset = -1.1247  
   Scan(60,Sec,1,0)
     RealTime(rTime())
     
@@ -536,7 +538,14 @@ BeginProg
     'Type T (copper-constantan) Thermocouple measurements Temp_C(1) on the AM25T Multiplexer. For Evaporation Pan and Soil Temp Thermocouples:
     AM25T(MplexTemp_C(1),18,mV20C,1,7,TypeT,MplexRTemp_C,2,1,Vx2,True,0,_60Hz,1,0)
     
-    
+    'Evaporation Pan measurement Evap_Depth
+    ' this instruction modified in September 2012 to fix a bug created in the 21X to CR3000 program conversion.
+    ' The 21X program was applying the multiplier & offset to the milliVolt output being measured.
+    ' this instruction returns (with multiplier of 1 and offset of 0) the ratio: measured volts / excitation volts.  Multiplying by the exciation voltage
+    ' then returns measured volts as desired.
+    BrHalf (Evap_Depth,1,mV5000,16,Vx3,1,5000,True ,0,250,1 * 5000,0)
+    Evap_Depth = 0.03121 * Evap_Depth + Evap_offset
+          
     'Call Data Tables and Store Data
     CallTable(FiveMinutes)
     CallTable(Hourly)
