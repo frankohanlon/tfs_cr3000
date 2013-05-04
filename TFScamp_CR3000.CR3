@@ -46,12 +46,35 @@
 ' 9 Septmber 2012 Rewired station to add a multiplexer (for cleanliness on the wiring) and also a new Kipp and Zonen CGR-4)
 
 
+''''''''''''''''''''''''''''''''''''''''
+''''''''''''''''''''''''''''''''''''''''
+'' TELEMETRY                        ''''
+'' Maxon Data Radio @ 152.480 MHz   ''''
+''''''''''''''''''''''''''''''''''''''''
+''''''''''''''''''''''''''''''''''''''''
+
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '''  SENSOR LIST   '''''''''''''''''''''''''''''''''''
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
+' Kipp and Zonen CGR-4 Net Radiometer
+' CS420 Lake Level Pressure Transducer
+' 107 Temperature Probe
+' CS100 Setra Barometric Pressure Sensor
+' MetOne 024A Wind Direction Sensor
+' MetOne 014A Wind Speed Sensor
+' Evaporation Pan Pressure Transducer
+' AM25T Thermocouple multiplexer with 18 connected thermocouples
+' Ott Pluvio Precipitation Gage
+' Tipping Bucket Rain Gage (?)
+' CMP6 Pyranometer
+' Li-Cor Quantum. Model LI-190SB
+' Li-Cor Underwater Quantum. LI-192SB
+' UVA_YES Pyranometer
+' UVB_YES Pyranometer
+' HMP45C AT/RH Sensor at 5m 
+' RM Young 41382VF AT/RH Sensor at 3m
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -67,12 +90,12 @@
 ' SE7 -- CS420 Lake Level (White Wire)
 ' SE8 -- CS420 Lake Level (Yellow Wire Wire)
 ' SE9 -- 107 Temperature Signal (Red Wire)
-' SE10 -- Barometric Pressure Signal (Yellow Wire)
+' SE10 -- Barometric Pressure Signal (Yellow Wire) ## This is what I have from notes but it is contrary to what the CS100 manual says.
 ' SE11 -- 
 ' SE12 -- 
 ' SE13 -- AM25T HI
 ' SE14 -- AM25T LO
-' SE15 -- Met One WD (Red Wire)
+' SE15 -- Met One 024A WD (Red Wire)
 ' SE16 -- Evaporation (Red Wire)
 ' SE17 -- 
 ' SE18 -- 
@@ -93,14 +116,14 @@
 'VX4 -- CS420 Excite (Red Wire)
 '
 'P1 -- Empty
-'P2 -- 5m Met One WS (Black Wire)
+'P2 -- 5m MetOne 014A Wind Speed (Black Wire)
 'P3 -- Ott Pluvio Rain (Green Wire)
 'P4 -- Rain 2 (NOT sure what this Is going To) (Red Wire)
 '
 'C1 -- AM25T RES (Red Wire)
-'C2 -- AM25T CLK (Yellow Wire)
+'C2 -- AM25T CLK (Yellow Wire); AM16/32B CLK
 'C3 -- Barometric Pressure CTRL
-'C4 -- Empty
+'C4 -- AM16/32B RES
 'C5 -- Empty
 'C6 -- HMP45C CTRL (Orange Wire)
 'C7 -- Empty
@@ -110,7 +133,7 @@
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'''  AM15T Wiring (HI = Blue Wire; LO = Red Wire)  ''''''''
+'''  AM25T Wiring (HI = Blue Wire; LO = Red Wire)  ''''''''
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 ' Group1 -- EvapoTC
@@ -122,7 +145,7 @@
 ' Group7 -- soil2_100cm
 ' Group8 -- soil2_150cm
 ' Group9 -- LakeTC_C
-' Gropu10 -- NA10
+' Group10 -- NA10
 ' Group11 -- NA11
 ' Group12 -- soil1_moss
 ' Group13 -- soil1_20cm
@@ -137,42 +160,120 @@
 ''' AM16/32B in 2/32 Mode Wiring  '''''''''''''''''''''''''
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'Group1	HI	CMP6 Pyranometer HI (Red Wire / Yellow Cable)
-'       LO	CMP6 Pyranometer LO (Blue Wire / Yellow Cable)
-'Group2	HI	Li-Cor Quantum. Model LI-190SB HI (Red Wire)
-'	      LO	Li-Cor Quantum. Model LI-190SB LO (Black Wire)
-'Group3	HI	Li-Cor Underwater Quantum. LI-192SB HI (Red Wire)
-'       LO	Li-Cor Underwater Quantum. LI-192SB LO (Black Wire)
-'Group4	HI	Differential Voltage measurements UVA_YES Watts/m2 HI (White Wire)
-'	      LO	Differential Voltage measurements UVA_YES Watts/m2 LO (Black Wire)
-'Group5	HI	Differential Voltage measurements UVB_YES Watts/m2 HI (White Wire)
-'	      LO	Differential Voltage measurements UVB_YES Watts/m2 LO (Black Wire)
-'Group6	HI	HMP45C at 5m AT HI (Yellow Wire) 
-'	      LO	HMP45C at 5m AT LO, Jumper To G7LO (Purple Wire)
-'Group7	HI	HMP45C at 5m RH HI (Blue Wire)
-'	      LO	HMP45C at 5m RH LO, Jumper To G6LO (Purple Wire)
-'Group8	HI	RM Young 41382VF Air Temperature at 3m (Red Wire)
-'	      LO	RM Young 41382VF Air Temperature at 3m, Jumper to Group 9 LO (Black Wire)
-'Group9	HI	RM Young 41382VF Relative Humidity Sensor at 3m (Green Wire)
-'	      LO	RM Young 41382VF Relative Humidity Sensor at 3m (Jumper to Group 8 LO)
+' RES -- CR1000 C4
+' CLK -- CR1000 C2
+' COM ODD HI -- CR1000 SE19
+' COM ODD LO -- CR1000 SE20
+'Group1 HI  CMP6 Pyranometer HI (Red Wire / Yellow Cable)
+'       LO  CMP6 Pyranometer LO (Blue Wire / Yellow Cable)
+'Group2 HI  Li-Cor Quantum. Model LI-190SB HI (Red Wire)
+'       LO  Li-Cor Quantum. Model LI-190SB LO (Black Wire)
+'Group3 HI  Li-Cor Underwater Quantum. LI-192SB HI (Red Wire)
+'       LO  Li-Cor Underwater Quantum. LI-192SB LO (Black Wire)
+'Group4 HI  Differential Voltage measurements UVA_YES Watts/m2 HI (White Wire)
+'       LO  Differential Voltage measurements UVA_YES Watts/m2 LO (Black Wire)
+'Group5 HI  Differential Voltage measurements UVB_YES Watts/m2 HI (White Wire)
+'       LO  Differential Voltage measurements UVB_YES Watts/m2 LO (Black Wire)
+'Group6 HI  HMP45C at 5m AT HI (Yellow Wire) 
+'       LO  HMP45C at 5m AT LO, Jumper To G7LO (Purple Wire)
+'Group7 HI  HMP45C at 5m RH HI (Blue Wire)
+'       LO  HMP45C at 5m RH LO, Jumper To G6LO (Purple Wire)
+'Group8 HI  RM Young 41382VF Air Temperature at 3m (Red Wire)
+'       LO  RM Young 41382VF Air Temperature at 3m, Jumper to Group 9 LO (Black Wire)
+'Group9 HI  RM Young 41382VF Relative Humidity Sensor at 3m (Green Wire)
+'       LO  RM Young 41382VF Relative Humidity Sensor at 3m (Jumper to Group 8 LO)
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 ''   Sensor Wiring   ''''''''''''''''''''''''''''''''''''''
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Kipp and Zonen CGR-4
+' Red Wire -- CR1000 SE1
+' Blue Wire -- CR1000 SE2
+' Green Wire -- CR1000 SE4 & Precision Resistor to VX2
+
+' CS420 Lake Level Pressure Transducer
+' Orange Wire -- CR1000 SE5
+' Black Wire -- CR1000 SE6 
+' White Wire -- CR1000 SE7
+' Yellow Wire -- CR1000 SE8
+' Red Wire -- VX4
+' ____ Wires -- CR1000 Signal Ground
+
+' 107 Temperature Probe
+' Red Wire --  CR1000 SE9
+' Black Wire -- CR1000 Vx1
+' Purple Wire -- CR1000 Signal Ground
+' Clear Wire -- CR1000 Signal Ground
+
+' CS100 - Setra Model 278 Barometric Pressure
+' Need to get more info on site about the sensor wiring for this sensor. 5/2013
+' Yellow Wire -- CR1000 SE10
+' BP CTRL -- CR1000 C3
+' Other wiring... TBD
+
+' Met One 024A Wind Direction Sensor
+' Red Wire -- CR1000 SE15
+' Black Wire -- CR1000 VX1
+' White Wire -- CR1000 Signal Ground
+
+' MetOne 014A Wind Speed Sensor
+' Black Wire -- CR1000 P2
+' White Wire -- CR1000 Signal Ground
+' Clear Wire -- CR1000 Signal Ground
+
+' Evaporation Pan
+' Red Wire -- CR1000 SE16
+' White Wire -- CR1000 VX3 
+' TBD -- CR1000 Signal Ground
+
+' CMP6 Pyranometer
+' Red Wire  -- AM16/32B Group 1 HI
+' Blue Wire -- AM16/32B Group 1 LO
+
+' Li-Cor Quantum Model LI-190SB 
+' Red Wire   -- AM16/32B Group 2 HI
+' Black Wire -- Am16/32B Group 2 LO
+
+' Li-Cor Underwater Quantum. LI-192SB
+' Red Wire -- AM16/32B Group 3 HI
+' Black Wire -- AM16/32B Group 3 LO
+
+' Yankee Environmental Systems UV A Pyranometer
+' White Wire -- AM16/32B Group 4 HI
+' Black Wire -- AM16/32B Group 4 LO
+
+' Yankee Environmental Systems UV B Pyranometer
+' White Wire -- AM16/32B Group 5 HI
+' Black Wire -- AM16/32B Group 5 LO
+
+' Vaisala HMP45C Air Temperature / Relative Humidity @ 5m
+' Yellow Wire -- AM16/32B Group 6 HI
+' Blue Wire   -- AM16/32B Group 7 Hi
+' Purple Wire -- AM16/32B Group 6 & 7 LO
+' Orange Wire -- CR1000 C6
+' Red Wire    -- CR100 12V
+' Black Wire  -- CR1000 G
+' Clear Wire  -- CR1000 G
+
+' RM Young 41382VF AT/RH @ 3m
+' Red Wire -- AM16/32B Group 8 HI
+' Green Wire -- AM16/32B Group 9 HI
+' Black Wire -- AM16/32B Group 8 & 9 LO
+
 
 ''''''''''''''''''''''''''''''
 ''''''''''''''''''''''''''''''
 '' Declare Constants '''''''''
 ''''''''''''''''''''''''''''''
 ''''''''''''''''''''''''''''''
-    'Steinhart-Hart Fit Constants
+    'Steinhart-Hart Fit Constants for CGR4
     Const C1 = 0.0011281
     Const C2 = 0.0002343
     Const C3 = 0.000000086946
     Const Rf = 25000  ' Resistor Value #####################################  Neeed to change this to as-built.
-    Const CGR4_CF = 1
+    Const CGR4_CF = 1 ' Need to change this as well....
     
 ''''''''''''''''''''''''''''''
 ''''''''''''''''''''''''''''''
@@ -283,57 +384,57 @@ DataTable(FiveMinutes,True,-1)
   DataInterval(0,5,Min,10)
   CardOut(0,-1)
     Sample(9,rTime(),FP2)
-	  Average(1,SolarkW,FP2,False)
-   	Average(1,UVA_YES,FP2,False)
-	  Average(1,UVB_YES,FP2,False)
-	  Average(1,AirTemp_5m,FP2,False)
-	  Average(1,AirTemp_3m,FP2,False)
-	  Average(1,RH_3m,FP2,False)
-	  Average(1,RH_5m,FP2,False)
-	  WindVector (1,WS_5m,WindDir,FP2,False,0,0,0)
-	  FieldNames ("mean_wind_speed_5m, mean_wind_direction_5m, std_wind_dir")
-	  Average(1,CGR4,FP2,False)
-	  Average(1,CGR4_temperature,FP2,False)
+      Average(1,SolarkW,FP2,False)
+    Average(1,UVA_YES,FP2,False)
+      Average(1,UVB_YES,FP2,False)
+      Average(1,AirTemp_5m,FP2,False)
+      Average(1,AirTemp_3m,FP2,False)
+      Average(1,RH_3m,FP2,False)
+      Average(1,RH_5m,FP2,False)
+      WindVector (1,WS_5m,WindDir,FP2,False,0,0,0)
+      FieldNames ("mean_wind_speed_5m, mean_wind_direction_5m, std_wind_dir")
+      Average(1,CGR4,FP2,False)
+      Average(1,CGR4_temperature,FP2,False)
 EndTable
 
 DataTable(Hourly,True,-1)
   'Hourly Measurements
-	 DataInterval(0,60,Min,10)
-   	Sample(4,rTime(),FP2)
-   	Average(1,Batt_Volt,FP2,False)
-   	Average(1,SolarkW,FP2,False)
-   	Average(1,LakeQuant,FP2,False)
-   	Average(1,Quant,FP2,False)
-   	Average(1,UVA_YES,FP2,False)
-	  Average(1,UVB_YES,FP2,False)
+     DataInterval(0,60,Min,10)
+    Sample(4,rTime(),FP2)
+    Average(1,Batt_Volt,FP2,False)
+    Average(1,SolarkW,FP2,False)
+    Average(1,LakeQuant,FP2,False)
+    Average(1,Quant,FP2,False)
+    Average(1,UVA_YES,FP2,False)
+      Average(1,UVB_YES,FP2,False)
     Average(1,Press_mBar,IEEE4,False)
-   	Average(1,AirTemp_3m,FP2,False)
-   	Average(1,RH_3m,FP2,False)
-   	Average(1,AirTemp_5m,FP2,False)
-   	Average(1,RH_5m,FP2,False)
-   	'Average(1,WS_5m,FP2,False) same as the wind speed in the windvector 
-   	WindVector (1,WS_5m,WindDir,FP2,False,0,0,0)
-   	FieldNames ("mean_wind_speed_5m, mean_wind_direction_5m, std_wind_dir")
-   	'Sample(1,WindDir,FP2) meanless to sample once and hour
-   	Totalize(1,Rain_mm,FP2,False)
+    Average(1,AirTemp_3m,FP2,False)
+    Average(1,RH_3m,FP2,False)
+    Average(1,AirTemp_5m,FP2,False)
+    Average(1,RH_5m,FP2,False)
+    'Average(1,WS_5m,FP2,False) same as the wind speed in the windvector 
+    WindVector (1,WS_5m,WindDir,FP2,False,0,0,0)
+    FieldNames ("mean_wind_speed_5m, mean_wind_direction_5m, std_wind_dir")
+    'Sample(1,WindDir,FP2) meanless to sample once and hour
+    Totalize(1,Rain_mm,FP2,False)
     Totalize(1,Rain2_mm,FP2,False)
-	  Average(1,CGR4,FP2,False)
-	  Average(1,CGR4_temperature,FP2,False)
+      Average(1,CGR4,FP2,False)
+      Average(1,CGR4_temperature,FP2,False)
 EndTable
 
 DataTable(ThreeHourly,True,-1)
  'Three-Hourly Measurements
- 	DataInterval(0,3,Hr,10)
- 	CardOut(0,-1)
+    DataInterval(0,3,Hr,10)
+    CardOut(0,-1)
     Sample(4,rTime(),FP2)
     Average(1,Batt_Volt,FP2,False)
     Average(1,MplexRTemp_C,FP2,False)
-  	Average(18,MplexTemp_C(),FP2,False)
-  	Average(1,LakeTemp_C,FP2,False)
- 		Average(1,LakeLvl_cm,IEEE4,False)
- 		Average(1,Evap_Depth,fp2,True)
+    Average(18,MplexTemp_C(),FP2,False)
+    Average(1,LakeTemp_C,FP2,False)
+        Average(1,LakeLvl_cm,IEEE4,False)
+        Average(1,Evap_Depth,fp2,True)
 EndTable
-  	
+    
 DataTable(Daily,True,-1)
  'Daily Measurements
   DataInterval(0,1,Day,0)
@@ -343,15 +444,15 @@ DataTable(Daily,True,-1)
     Totalize(1,Rain_mm,FP2,False)
     Totalize(1,Rain2_mm,FP2,False)
     Average(1,AirTemp_5m,FP2,False)
-  	Maximum(1,AirTemp_5m,FP2,False,True)
-  	Minimum(1,AirTemp_5m,FP2,False,True)
+    Maximum(1,AirTemp_5m,FP2,False,True)
+    Minimum(1,AirTemp_5m,FP2,False,True)
     Average(1,AirTemp_3m,FP2,False)
-  	Maximum(1,AirTemp_3m,FP2,False,True)
-  	Minimum(1,AirTemp_3m,FP2,False,True)
-  	Maximum(1,WS_5m,FP2,False,True)
-  	Average(1,WS_5m,FP2,False)
-  	Sample(1,evap_offset,fp2)
-  	Sample(1,p_sig,ieee4)
+    Maximum(1,AirTemp_3m,FP2,False,True)
+    Minimum(1,AirTemp_3m,FP2,False,True)
+    Maximum(1,WS_5m,FP2,False,True)
+    Average(1,WS_5m,FP2,False)
+    Sample(1,evap_offset,fp2)
+    Sample(1,p_sig,ieee4)
 EndTable
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -440,6 +541,7 @@ BeginProg
     ''''''''''''''''''''''''''''''
     ''''''''''''''''''''''''''''''
     ''RM Young 41382VF Temperature & Relative Humidity Sensor at 3m measurements AirTemp and RH:
+    PulsePort(2,10000)
     'VoltDiff(AirTemp_3m,1,mV1000,10,True,0,_60Hz,0.2,-50)
     'AirTemp_3m=(AirTemp_3m-32)*0.5555555
     'VoltDiff(RH_3m,1,mV1000,11,True,0,_60Hz,0.1,0)
@@ -478,7 +580,7 @@ BeginProg
     
     'CS420/CS425 Druck PDCR 1830/1230 Pressure Tansducer (6-wire) measurement Lvl_cm:
     'Requires 2 VoltDiff channels: 3 and 4. VoltDiff channels MUST be sequential.
-    BrFull6W(LakeLvl_cm,1,mV5000,mV50,3,Vx4,1,5000,True,True,0,_60Hz,71.743,0)	
+    BrFull6W(LakeLvl_cm,1,mV5000,mV50,3,Vx4,1,5000,True,True,0,_60Hz,71.743,0)  
     
     '107 Temperature Probe measurement for Lake Temp_C - new Installed Aug 2008:
     'Sitting in bucket with ice water - readings: 0.2 deg C.
@@ -501,7 +603,7 @@ BeginProg
     ''''''''''''''''''''
     ''' Wind  ''''''''''
     ''''''''''''''''''''
-    ''''''''''''''''''''        	 
+    ''''''''''''''''''''             
     '024A Wind Direction Sensor measurement WindDir:
     BrHalf(WindDir,1,mV5000,15,Vx1,1,5000,True,2000,250,735.140,0)    
     If WindDir>=360 Then WindDir=0
@@ -550,7 +652,7 @@ BeginProg
     CallTable(FiveMinutes)
     CallTable(Hourly)
     CallTable(Daily)
-    CallTable(ThreeHourly)	  
+    CallTable(ThreeHourly)    
     p_sig = Signature
-	NextScan
+    NextScan
 EndProg
