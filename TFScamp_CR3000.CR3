@@ -45,6 +45,7 @@
 
 ' 9 Septmber 2012 Rewired station to add a multiplexer (for cleanliness on the wiring) and also a new Kipp and Zonen CGR-4)
 
+' 4 May 2013  Added quite a bit of wiring information to the program.
 
 ''''''''''''''''''''''''''''''''''''''''
 ''''''''''''''''''''''''''''''''''''''''
@@ -81,37 +82,37 @@
 '''  LOGGER WIRING   ''''''''''''''''''''''''''''''''''''''
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-' SE1 -- Kipp and Zonen CGR-4 HI (Red Wire)
-' SE2 -- Kipp and Zonen CGR-4 LO (Blue Wire)
+' SE1 -- 
+' SE2 -- 
 ' SE3 -- 
-' SE4 -- Kipp and Zonen CGR-4 Thermistor (Green Wire) & Precision Resistor to VX2
+' SE4 -- 
 ' SE5 -- CS420 Lake Level (Orange Wire)
 ' SE6 -- CS420 Lake Level (Black Wire)
 ' SE7 -- CS420 Lake Level (White Wire)
 ' SE8 -- CS420 Lake Level (Yellow Wire Wire)
 ' SE9 -- 107 Temperature Signal (Red Wire)
-' SE10 -- Barometric Pressure Signal (Yellow Wire) ## This is what I have from notes but it is contrary to what the CS100 manual says.
+' SE10 -- Barometric Pressure Signal (Blue Wire) 
 ' SE11 -- 
 ' SE12 -- 
 ' SE13 -- AM25T HI
 ' SE14 -- AM25T LO
 ' SE15 -- Met One 024A WD (Red Wire)
 ' SE16 -- Evaporation (Red Wire)
-' SE17 -- 
+' SE17 --Kipp and Zonen CNR-4 Thermistor (Green Wire) & Precision Resistor to VX2 
 ' SE18 -- 
 ' SE19 -- AM16/32B HI
 ' SE20 -- AM16/32B LO
 ' SE21 -- 
 ' SE22 -- 
-' SE23 -- 
-' SE24 -- 
+' SE23 -- LakeTC_C HI
+' SE24 -- LakeTC_C LO
 ' SE25 -- 
 ' SE26 -- 
 ' SE27 -- 
 ' SE28 -- 
 '
 'VX1 -- 107 Temperature Excite (Black Wire); Wind Direction Excite (Black Wire)
-'VX2 -- AM25T Excite (Yellow Wire); Precision Resistor to SE4
+'VX2 -- AM25T Excite (Yellow Wire); Precision Resistor to SE17
 'VX3 -- Evap Excite (White Wire)
 'VX4 -- CS420 Excite (Red Wire)
 '
@@ -124,7 +125,7 @@
 'C2 -- AM25T CLK (Yellow Wire); AM16/32B CLK
 'C3 -- Barometric Pressure CTRL
 'C4 -- AM16/32B RES
-'C5 -- Empty
+'C5 -- SR50A_1 COM
 'C6 -- HMP45C CTRL (Orange Wire)
 'C7 -- Empty
 'C8 -- Empty
@@ -182,56 +183,54 @@
 '       LO  RM Young 41382VF Air Temperature at 3m, Jumper to Group 9 LO (Black Wire)
 'Group9 HI  RM Young 41382VF Relative Humidity Sensor at 3m (Green Wire)
 '       LO  RM Young 41382VF Relative Humidity Sensor at 3m (Jumper to Group 8 LO)
+'Group10 HI CNR4 SW UP HI 
+'        LO CNR4 SW UP LO
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 ''   Sensor Wiring   ''''''''''''''''''''''''''''''''''''''
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-' Kipp and Zonen CGR-4
-' Red Wire -- CR1000 SE1
-' Blue Wire -- CR1000 SE2
-' Green Wire -- CR1000 SE4 & Precision Resistor to VX2
-
 ' CS420 Lake Level Pressure Transducer
-' Orange Wire -- CR1000 SE5
-' Black Wire -- CR1000 SE6 
-' White Wire -- CR1000 SE7
-' Yellow Wire -- CR1000 SE8
-' Red Wire -- VX4
-' ____ Wires -- CR1000 Signal Ground
+' Orange Wire        -- CR3000 SE5
+' Black Wire         -- CR3000 SE6 
+' Yellow Wire        -- CR3000 SE7
+' Blue Wire          -- CR3000 SE8
+' Red Wire           -- VX4
+' Clear, White Wires -- CR1000 Signal Ground
 
 ' 107 Temperature Probe
-' Red Wire --  CR1000 SE9
-' Black Wire -- CR1000 Vx1
-' Purple Wire -- CR1000 Signal Ground
-' Clear Wire -- CR1000 Signal Ground
+' Red Wire    -- CR3000 SE9
+' Black Wire  -- CR3000 Vx1
+' Purple Wire -- CR3000 Signal Ground
+' Clear Wire  -- CR3000 Signal Ground
 
 ' CS100 - Setra Model 278 Barometric Pressure
-' Need to get more info on site about the sensor wiring for this sensor. 5/2013
-' Yellow Wire -- CR1000 SE10
-' BP CTRL -- CR1000 C3
-' Other wiring... TBD
+' Blue Wire   -- CR3000 SE10
+' Yellow Wire -- CR3000 AG
+' Black Wire  -- CR3000 G
+' Clear Wire  -- CR3000 G
+' Green Wire  -- CR3000 C3
 
 ' Met One 024A Wind Direction Sensor
-' Red Wire -- CR1000 SE15
-' Black Wire -- CR1000 VX1
-' White Wire -- CR1000 Signal Ground
+' Red Wire   -- CR3000 SE15
+' Black Wire -- CR3000 VX1
+' White Wire -- CR3000 Signal Ground
 
 ' MetOne 014A Wind Speed Sensor
-' Black Wire -- CR1000 P2
-' White Wire -- CR1000 Signal Ground
-' Clear Wire -- CR1000 Signal Ground
+' Black Wire -- CR3000 P2
+' White Wire -- CR3000 Signal Ground
+' Clear Wire -- CR3000 Signal Ground
 
 ' Evaporation Pan
-' Red Wire -- CR1000 SE16
-' White Wire -- CR1000 VX3 
-' TBD -- CR1000 Signal Ground
+' Red Wire   -- CR3000 SE16
+' White Wire -- CR3000 VX3 
+' Black Wire -- CR3000 Signal Ground
 
 ' CMP6 Pyranometer
-' Red Wire  -- AM16/32B Group 1 HI
-' Blue Wire -- AM16/32B Group 1 LO
-
+' Red Wire   -- AM16/32B Group 1 HI
+' Blue Wire  -- AM16/32B Group 1 LO
+' Black Wire -- AM16/32B AG
 ' Li-Cor Quantum Model LI-190SB 
 ' Red Wire   -- AM16/32B Group 2 HI
 ' Black Wire -- Am16/32B Group 2 LO
@@ -252,28 +251,54 @@
 ' Yellow Wire -- AM16/32B Group 6 HI
 ' Blue Wire   -- AM16/32B Group 7 Hi
 ' Purple Wire -- AM16/32B Group 6 & 7 LO
-' Orange Wire -- CR1000 C6
+' Orange Wire -- CR3000 C6
 ' Red Wire    -- CR100 12V
-' Black Wire  -- CR1000 G
-' Clear Wire  -- CR1000 G
+' Black Wire  -- CR3000 G
+' Clear Wire  -- CR3000 G
 
 ' RM Young 41382VF AT/RH @ 3m
-' Red Wire -- AM16/32B Group 8 HI
+' Red Wire   -- AM16/32B Group 8 HI
 ' Green Wire -- AM16/32B Group 9 HI
 ' Black Wire -- AM16/32B Group 8 & 9 LO
+' White Wire -- CR3000 12V
+' Clear Wire -- CR3000 AG
 
+' Kipp & Zonen CNR4 Net Radiometer
+' CNR4 Left Yellow Cable
+' Pyranometer Upper Hi (Red Wire) -- AM16/32B Group 10 Hi
+' Pyranometer Upper Lo (Blue Wire) -- AM16/32B Group 10 Lo
+' Pyranometer Lower Hi (White Wire) -- AM16/32B Group 11 Hi
+' Pyranometer Lower Lo (Black Wire) -- AM16/32B Group 11 Lo
+' Pyrgeometer Upper Hi (Gray Wire) -- AM16/32B Group 12 Hi
+' Pyrgeometer Upper Lo (Yellow Wire) -- AM16/32B Group 12 Lo
+' Pyrgeometer Lower Hi (Brown Wire) -- AM16/32B Group 13 Hi
+' Pyrgeometer Lower Lo (Green Wire) -- AM16/32B Group 13 Lo
+' Shield -- AM16/32B Ground
+' CNR4 Right Yellow cable
+' Thermistor Hi (White Wire) -- CR1000 SE17
+' Thermistor Lo (Black Wire) -- CR1000 AG
+' Precision Resistor -- CR3000 SE17 to CR3000 VX1 
+' Shield -- CR1000 Ground
+
+' OTT Pluvio 2
+' Green Wire -- CR3000 P3
+' White Wire -- CR3000 AG
+' Red Wire   -- CR3000 12V
+' Black Wire -- CR3000 G
+
+' Tipping Bucket
+' Red Wire   -- CR3000 P4
+' Black Wire -- CR3000 G
 
 ''''''''''''''''''''''''''''''
 ''''''''''''''''''''''''''''''
 '' Declare Constants '''''''''
 ''''''''''''''''''''''''''''''
 ''''''''''''''''''''''''''''''
-    'Steinhart-Hart Fit Constants for CGR4
-    Const C1 = 0.0011281
-    Const C2 = 0.0002343
-    Const C3 = 0.000000086946
-    Const Rf = 25000  ' Resistor Value #####################################  Neeed to change this to as-built.
-    Const CGR4_CF = 1 ' Need to change this as well....
+    Const CNR4_SW_UP_CF = 1 / 11.22 * 1000   ' = (1 / 15.49 uV / (W/m^2) ) to units: W/m^2 / mV
+    Const CNR4_SW_DN_CF = 1 / 12.87 * 1000   ' = (1 / 10.63 uV / (W/m^2) ) to units: W/m^2 / mV
+    Const CNR4_LW_UP_CF = 1 / 7.02 * 1000    ' = (1 / 9.00 uV / (W/m^2) ) to units: W/m^2 / mV
+    Const CNR4_LW_DN_CF = 1 / 7.67 * 1000    ' = (1 / 8.13 uV / (W/m^2) ) to units: W/m^2 / mV
     
 ''''''''''''''''''''''''''''''
 ''''''''''''''''''''''''''''''
@@ -281,6 +306,7 @@
 ''''''''''''''''''''''''''''''
 ''''''''''''''''''''''''''''''
   Public Batt_Volt 'There are fuses on the batteries. If +/- touch, fuses may blow. Check these if power issues exist.
+  Public panel_temp
   Public SolarkW 'Red - 1H, Blue - 1L, Black - AG
   Public SolarkJ
   Public Quant 'Red - SE3 (2H), Black - AG
@@ -300,14 +326,20 @@
   Public Rain2_mm 'P4
   Public UVA_YES 'YES UVA SE23 single ended voltage measurement UVA-1 S/N 091001 coefficient 29.02 Watts per m2 per Volt    (W/m2)/V
   Public UVB_YES 'YES UV  SE24 single ended voltage measurement UVB-1 S/N 090706 coefficient 2.06 Watts per m2 per Volt    (W/m2)/V
-  Public CGR4
-  Public CGR4_temperature  
-  Public CGR4_ratio, CGR4_Res
   Public MplexTemp_C(18) 'Blue - H, Red - L
+  Public CNR_Therm
+  Public CNR_Temp_K
+  Public CNR4_SW_UP
+  Public CNR4_SW_DN
+  Public CNR4_LW_UP
+  Public CNR4_LW_DN
   Public rTime(9)
-  Public p_sig
-  ' need to add yet Kipp and Zonen CGR-4
-
+  Public SR50_1(2)
+  Public temp_cor_dist_1
+  Public snow_depth_1
+  Public init_snow_dist_1
+  Public LakeTC_C
+  
 ''''''''''''''''''''''''''''''
 ''''''''''''''''''''''''''''''
 '' Aliases  ''''''''''''''''''
@@ -321,7 +353,7 @@
   Alias MplexTemp_C(6)= soil2_50cm
   Alias MplexTemp_C(7)= soil2_100cm
   Alias MplexTemp_C(8)= soil2_150cm
-  Alias MplexTemp_C(9)= LakeTC_C
+'  Alias MplexTemp_C(9)= LakeTC_C        '5/2013 doesn't presently fit on AM25T with new tower.
   Alias MplexTemp_C(10)= NA10
   Alias MplexTemp_C(11)= NA11
   Alias MplexTemp_C(12)= soil1_moss
@@ -341,6 +373,8 @@
   Alias rTime(7) = uSecond   
   Alias rTime(8) = WeekDay  
   Alias rTime(9) = Day_of_Year 
+  Alias SR50_1(1) = Raw_Dist_1
+  Alias SR50_1(2) = SignalQuality_1
 
 ''''''''''''''''''''''''''''''''''''''''''''
 ''''''''''''''''''''''''''''''''''''''''''''
@@ -368,8 +402,12 @@
   Units Evap_Depth=mm
   Units UVA_YES=Watts/m2
   Units UVB_YES=Watts/m2
-  Units CGR4=Watts/m2
-  Units CGR4_temperature = Deg C
+  Units CNR4_SW_UP=Watts/m2
+  Units CNR4_SW_DN=Watts/m2
+  Units CNR4_LW_UP=Watts/m2
+  Units CNR4_LW_DN=Watts/m2
+  Units CNR_therm = Ohms
+  Units CNR_Temp_K = Deg K
 
 
 '''''''''''''''''''''''''''''''
@@ -393,8 +431,12 @@ DataTable(FiveMinutes,True,-1)
       Average(1,RH_5m,FP2,False)
       WindVector (1,WS_5m,WindDir,FP2,False,0,0,0)
       FieldNames ("mean_wind_speed_5m, mean_wind_direction_5m, std_wind_dir")
-      Average(1,CGR4,FP2,False)
-      Average(1,CGR4_temperature,FP2,False)
+      Average(1,Quant,fp2,false)
+      Average(1,cnr4_sw_up,FP2,False)
+      Average(1,cnr4_sw_dn,FP2,False)
+      Average(1,cnr4_lw_up,FP2,False)
+      Average(1,cnr4_lw_dn,FP2,False)            
+      Average(1,cnr_temp_k,FP2,False)
 EndTable
 
 DataTable(Hourly,True,-1)
@@ -418,8 +460,11 @@ DataTable(Hourly,True,-1)
     'Sample(1,WindDir,FP2) meanless to sample once and hour
     Totalize(1,Rain_mm,FP2,False)
     Totalize(1,Rain2_mm,FP2,False)
-      Average(1,CGR4,FP2,False)
-      Average(1,CGR4_temperature,FP2,False)
+    Average(1,cnr4_sw_up,FP2,False)
+    Average(1,cnr4_sw_dn,FP2,False)
+    Average(1,cnr4_lw_up,FP2,False)
+    Average(1,cnr4_lw_dn,FP2,False)            
+    Average(1,cnr_temp_k,FP2,False)
 EndTable
 
 DataTable(ThreeHourly,True,-1)
@@ -431,8 +476,8 @@ DataTable(ThreeHourly,True,-1)
     Average(1,MplexRTemp_C,FP2,False)
     Average(18,MplexTemp_C(),FP2,False)
     Average(1,LakeTemp_C,FP2,False)
-        Average(1,LakeLvl_cm,IEEE4,False)
-        Average(1,Evap_Depth,fp2,True)
+    Average(1,LakeLvl_cm,IEEE4,False)
+    Average(1,Evap_Depth,fp2,True)
 EndTable
     
 DataTable(Daily,True,-1)
@@ -452,7 +497,13 @@ DataTable(Daily,True,-1)
     Maximum(1,WS_5m,FP2,False,True)
     Average(1,WS_5m,FP2,False)
     Sample(1,evap_offset,fp2)
-    Sample(1,p_sig,ieee4)
+EndTable
+
+DataTable(Snow,True,1000)
+  DataInterval(0,5,Min,0)
+  CardOut(0,1000)
+    Sample(1,snow_depth_1,fp2)
+    Sample(1,Temp_Cor_Dist_1,fp2)
 EndTable
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -464,12 +515,13 @@ EndTable
 BeginProg
   Signature
   evap_offset = -1.1247  
+  init_snow_dist_1 = 100
   Scan(60,Sec,1,0)
     RealTime(rTime())
     
     'Default Datalogger Battery Voltage measurement Batt_Volt:
     Battery(Batt_Volt)
-
+    PanelTemp(panel_temp,_60Hz)
     ''''''''''''''''''''''''''''''''''''''''
     ''''''''''''''''''''''''''''''''''''''''
     ''' Measure Sensors on AM16/32B  '''''''
@@ -504,7 +556,12 @@ BeginProg
 
     ''''''''''''''''''''''''''''
     ''' Yes UVA Sensor  ''''''''
-    ''''''''''''''''''''''''''''
+    ''''''
+
+
+
+
+''''''''''''''''''''''
     'Differential Voltage measurements UVA_YES Watts/m2
     ' 2010-07-01 Werner Eugster:
     '   changed do differential volt reading, channel from 1 SE to 12 DIFF
@@ -539,14 +596,7 @@ BeginProg
     ''''''''''''''''''''''''''''''    
     ''' RM Young 41382VF   '''''''
     ''''''''''''''''''''''''''''''
-    ''''''''''''''''''''''''''''''
-    ''RM Young 41382VF Temperature & Relative Humidity Sensor at 3m measurements AirTemp and RH:
-    PulsePort(2,10000)
-    'VoltDiff(AirTemp_3m,1,mV1000,10,True,0,_60Hz,0.2,-50)
-    'AirTemp_3m=(AirTemp_3m-32)*0.5555555
-    'VoltDiff(RH_3m,1,mV1000,11,True,0,_60Hz,0.1,0)
-    'If RH_3m>100 AND RH_3m<108 Then RH_3m=100
-    
+    ''''''''''''''''''''''''''''''    
     'RM Young 41382VC Temperature & Relative Humidity Sensor at 3m measurements AirTemp and RH:
     PulsePort(2,10000)
     VoltDiff(AirTemp_3m,1,mV1000,10,True,0,_60Hz,0.1,-50.0)
@@ -556,22 +606,31 @@ BeginProg
 
     ''''''''''''''''''''''''''''''''''''''''''
     ''''''''''''''''''''''''''''''''''''''''''
+    ''' CNR4 $ Component Net Radiation   '''''
+    ''''''''''''''''''''''''''''''''''''''''''
+    ''''''''''''''''''''''''''''''''''''''''''
+    '' Added 5/2013 
+    ' measure internal thermistor
+    BrHalf(CNR_Therm,1,mV5000C,17,2,1,5000,True,0,_60Hz,1,0)  ' need to change SE & VX to asbuilt
+    CNR_Therm = 9990  * (CNR_Therm / (1 - CNR_Therm) ) ' need to change resistor value
+    CNR_Temp_K = 1 / ( 1.029e-3 + 2.391e-4 * LN(CNR_Therm) + 1.568e-7*(LN(CNR_Therm))^3)
+    PulsePort(2,10000)
+    VoltDiff (cnr4_sw_up,1,mV20C,10,True ,0,_60Hz,cnr4_sw_up_cf,0)       ' Measure SW UP
+    PulsePort(2,10000)
+    VoltDiff (cnr4_sw_dn,1,mV20C,10,True ,0,_60Hz,cnr4_sw_dn_cf,0)       ' Measure SW DN
+    PulsePort(2,10000)
+    VoltDiff (cnr4_lw_up,1,mV20C,10,True ,0,_60Hz,cnr4_lw_up_cf,0)       ' Measure LW UP
+    cnr4_lw_up = cnr4_lw_up + 5.67e-8 * CNR_Temp_K^4                  ' temperature correction
+    PulsePort(2,10000)
+    VoltDiff (cnr4_lw_dn,1,mV20C,10,True ,0,_60Hz,cnr4_lw_dn_cf,0)       ' Measure LW DN
+    cnr4_lw_dn = cnr4_lw_dn + 5.67e-8 * CNR_Temp_K^4                  ' temperature correction
+
+    ''''''''''''''''''''''''''''''''''''''''''
+    ''''''''''''''''''''''''''''''''''''''''''
     ''' Finished with AM16/32B sensors '''''''
     ''''''''''''''''''''''''''''''''''''''''''   
     PortSet(4,0)  'AM16/32B OFF    
     
-    ''''''''''''''''''''''''''''''''
-    ''''''''''''''''''''''''''''''''
-    ''' CGR4 Radiation  ''''''''''''
-    ''''''''''''''''''''''''''''''''
-    ''''''''''''''''''''''''''''''''    
-    VoltDiff(CGR4,1,mV1000,1,True,0,_60Hz,0.1,0)    
-    BrHalf(CGR4_ratio,1,mV5000,4,Vx2,1,5000,True,0,250,1,0)    
-    CGR4_Res = Rf*(CGR4_ratio/(1-CGR4_ratio))  'calculate resistance
-    CGR4_temperature = 1/(C1+C2*LN(CGR4_Res)+C3*LN(CGR4_Res)^3) 
-    CGR4 = CGR4 / CGR4_CF + 5.67*10^-8 * CGR4_temperature
-    
-
     ''''''''''''''''''
     ''''''''''''''''''    
     ''' Druck  '''''''
@@ -626,10 +685,17 @@ BeginProg
     'Rain tipping bucket measurement Rain2_mm:
     PulseCount(Rain2_mm,1,4,2,0,0.254,0)
     
-    'Evaporation Pan measurement Evap_Depth
-    'Replace the previous statements, a separate excite and then read; not correct way to measure resistance  
-    BrHalf (Evap_Depth,1,mV5000,16,Vx3,1,5000,True ,0,250,0.03121,-1.1247)
 
+    ''''''''''''''''''''''''''''''''''
+    ''''''''''''''''''''''''''''''''''        
+    ''' Measure Snow Sensor  '''''''''
+    ''''''''''''''''''''''''''''''''''
+    ''''''''''''''''''''''''''''''''''        
+    If IfTime(0,300,Sec) Then
+        SDI12Recorder (SR50_1(),5,0,"C!",100.0,0)
+        Temp_Cor_Dist_1 = Raw_Dist_1 * ( SQR( (AirTemp_3m + 273.15 ) / 273.15 ) )            
+        Snow_Depth_1 = Init_Snow_Dist_1 - Temp_Cor_Dist_1            
+    EndIf    
     ''''''''''''''''''''''''''''''''''
     ''''''''''''''''''''''''''''''''''        
     ''' AM25T Multiplexer  '''''''''''
@@ -640,6 +706,10 @@ BeginProg
     'Type T (copper-constantan) Thermocouple measurements Temp_C(1) on the AM25T Multiplexer. For Evaporation Pan and Soil Temp Thermocouples:
     AM25T(MplexTemp_C(1),18,mV20C,1,7,TypeT,MplexRTemp_C,2,1,Vx2,True,0,_60Hz,1,0)
     
+    ' New for 5/2013 The Lake thermocouple has moved to the CR3000... cable length issues.    
+    TCDiff (LakeTC_C,1,mV20c,12,TypeT,panel_temp,True ,0,250,1.0,0)
+
+
     'Evaporation Pan measurement Evap_Depth
     ' this instruction modified in September 2012 to fix a bug created in the 21X to CR3000 program conversion.
     ' The 21X program was applying the multiplier & offset to the milliVolt output being measured.
@@ -653,6 +723,6 @@ BeginProg
     CallTable(Hourly)
     CallTable(Daily)
     CallTable(ThreeHourly)    
-    p_sig = Signature
+    CallTable(snow)
     NextScan
 EndProg

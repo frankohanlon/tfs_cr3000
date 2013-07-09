@@ -1,0 +1,299 @@
+'CR3000_TFScamp
+'Created by Christie Haupert 8/7/08 - 8/21/08
+'This program replaces the 21x datalogger and program: 07TLKADD 0MIN and TEMP CORRECTION.CSI
+'Datalogger upgrade from 21x to CR3000 was completed on 8/19/08. Along with following changes:
+'Added CMP6 pyranometer with CV2, removed LICOR Pyranometer, added RM Young 41382VC at 3m,
+'replaced 5m CS500 T/RH with HMP45C (7 wire), removed Wind Speed and T/RH from 1 m, addition of 107-L Temp for Lake Temp.
+'All thermocouples were kept. Wind sensor - speed/direction were replaced with newly calibrated.
+
+'--------------------------------Notes and changes-----------------------------------------------------
+'April 19, 2009 made following changes: 
+'1) added CardOut command to all data tables to store data onto compact flash memory card.
+'2) changed daily table to report average and maximum wind speed, not minimum wind speed.
+'3) added 3 hour output for evapo_depth; added YES UVA UVB sensors just single end voltage Jim L 9Jun2010
+
+'July 1, 2010 made the following changes:
+'4) modified YES UVA UVB code (does not work in single ended mode) Werner Eugster 1Jul2010
+'5) added YES UVA UVB output to the 5-minute table Werner Eugster 1Jul2010
+
+'July 5, 2010 made the following changes:
+'corrected wind vector output settings in 1 hour and 5 min data tables. Originally, the wind speed was used twice
+' and wind direction was ignored to compute vector-averaged direction and speed Werner Eugster 5Jul2010
+
+'August 15, 2010 Jim L
+' Renamed all tables taking out "TABLE" from the name.
+' Increased precision on the Barometric sensor CS100 from fp2 to IEEE4.
+' Added Fieldnames to windvector output
+' Changed lake quantum integration to 250 to see if this will give correct readings.
+' Hand held give 50 um/m2/s  logger 770.  (???) 
+ 
+'August 18 2010 Jim Laundre
+'Installed new precipitaion gauge OTT Pluvio2 200mm It is default at .1mm 
+'Changed it to .01 mm via software USB on 19August 2010
+'Changed Lake quantum and Quant to double end reading.  Fixed the very high reading of the Lake PAR
+'and is the recmnmended hookup for this sensor
+ 
+' 22Aug2010 Jim L Change the Pluvio2 multiplier to 0.1 which is what it is output per pulse
+'  It looks like need to use the SDI-12 hookup to get other resolution and status.
+'  Disabled output for evapo pan.  This sensor is not working with the program.  Need to check it out next year.
+
+' 8 Aug 2011 Jessie Changed out WS, WD, Temp/RH sensors. New RM Young temp/RH is the Farenheit version; 
+' Program change added offset and multiplier to convert it back to C 
+
+' 18 Apr 2012 Jessie Changed Temp/RH sensor and changed multiplier to make it C again
+
+
+'Declare Variables and Units
+Public Batt_Volt 'There are fuses on the batteries. If +/- touch, fuses may blow. Check these if power issues exist.
+Public SolarkW 'Red - 1H, Blue - 1L, Black - AG
+Public SolarkJ
+Public Quant 'Red - SE3 (2H), Black - AG
+Public LakeQuant 'Red - SE4 (2L), Black - AG
+Public LakeLvl_cm 'Red - Vx4, White - AG, Orange - 3H, Black - 3L, Yellow - 4H, Blue - 4L, Clear - AG
+Public LakeTemp_C 'Red - SE9 (4L), Black - Vx1, Purple - AG, Clear - AG
+Public Press_mBar 'Blue - SE10 (5H), Green - C3, Yellow - AG, Black - G, Clear - G, Red - 12V
+Public AirTemp_5m 'Yellow - SE11(5L), Blue - SE12(6H), Purple - AG, Orange - C6, Red - 12V, Black - G, Clear - G
+Public RH_5m 
+Public MplexRTemp_C 'AM25T:CR3000, AG:AG, HI:7H, LO:7L, EX:Vx2, RES:C1, CLK:C2, AG:G, +12:12V
+Public AirTemp_3m 'Read - 10H, Black - 10L, Green - 11H, Jumper to Black - 11L, Clear - G, White - 12V
+Public RH_3m 
+Public Evap_Depth 'White - Vx3, Red - SE16(8H), Black - AG
+Public WindDir 'BrHalf: Red - SE15(8L), Black - Vx1, White - AG, Clear - AG
+Public WS_5m 'Black - P2, White - AG, Clear - AG
+Public Rain_mm 'P3
+Public Rain2_mm 'P4
+Public UVA_YES 'YES UVA SE23 single ended voltage measurement UVA-1 S/N 091001 coefficient 29.02 Watts per m2 per Volt    (W/m2)/V
+Public UVB_YES 'YES UV  SE24 single ended voltage measurement UVB-1 S/N 090706 coefficient 2.06 Watts per m2 per Volt    (W/m2)/V
+Public MplexTemp_C(18) 'Blue - H, Red - L
+
+  Alias MplexTemp_C(1)= EvapoTC
+  Alias MplexTemp_C(2)= soil2_moss
+  Alias MplexTemp_C(3)= soil2_5cm
+  Alias MplexTemp_C(4)= soil2_10cm
+  Alias MplexTemp_C(5)= soil2_20cm
+  Alias MplexTemp_C(6)= soil2_50cm
+  Alias MplexTemp_C(7)= soil2_100cm
+  Alias MplexTemp_C(8)= soil2_150cm
+  Alias MplexTemp_C(9)= LakeTC_C
+  Alias MplexTemp_C(10)= NA10
+  Alias MplexTemp_C(11)= NA11
+  Alias MplexTemp_C(12)= soil1_moss
+  Alias MplexTemp_C(13)= soil1_20cm
+  Alias MplexTemp_C(14)= soil1_150cm
+  Alias MplexTemp_C(15)= soil1_5cm
+  Alias MplexTemp_C(16)= soil1_10cm
+  Alias MplexTemp_C(17)= soil1_50cm
+  Alias MplexTemp_C(18)= soil1_100cm
+Public rTime(9)
+  Alias rTime(1) = Year          
+  Alias rTime(2) = Month         
+  Alias rTime(3) = DOM  
+  Alias rTime(4) = Hour 
+  Alias rTime(5) = Minute 
+  Alias rTime(6) = Second  
+  Alias rTime(7) = uSecond   
+  Alias rTime(8) = WeekDay  
+  Alias rTime(9) = Day_of_Year 
+
+Units Batt_Volt=Volts
+Units SolarkW=kW/m²
+Units SolarkJ=kJ/m²
+Units LakeQuant=micromoles/m²/sec
+Units Quant=micromoles/m²/sec
+Units Press_mBar=millibars
+Units AirTemp_3m=Deg C
+Units RH_3m=%
+Units AirTemp_5m=Deg C
+Units RH_5m=%
+Units WS_5m=meters/Second
+Units WindDir=degrees
+Units Rain_mm=mm
+Units Rain2_mm=mm
+Units MplexRTemp_C=Deg C
+Units MplexTemp_C=Deg C
+Units LakeTemp_C=Deg C
+Units LakeLvl_cm=cm
+Units Evap_Depth=mm
+Units UVA_YES=Watts/m2
+Units UVB_YES=Watts/m2
+
+
+'Define Data Tables
+
+DataTable(FiveMinutes,True,-1)
+ 'Five Minute Measurements
+  DataInterval(0,5,Min,10)
+  CardOut(0,-1)
+    Sample(9,rTime(),FP2)
+	  Average(1,SolarkW,FP2,False)
+   	Average(1,UVA_YES,FP2,False)
+	  Average(1,UVB_YES,FP2,False)
+	  Average(1,AirTemp_5m,FP2,False)
+	  Average(1,AirTemp_3m,FP2,False)
+	  Average(1,RH_3m,FP2,False)
+	  Average(1,RH_5m,FP2,False)
+	  WindVector (1,WS_5m,WindDir,FP2,False,0,0,0)
+	  FieldNames ("mean_wind_speed_5m, mean_wind_direction_5m, std_wind_dir")
+EndTable
+
+DataTable(Hourly,True,-1)
+  'Hourly Measurements
+	 DataInterval(0,60,Min,10)
+   	Sample(4,rTime(),FP2)
+   	Average(1,Batt_Volt,FP2,False)
+   	Average(1,SolarkW,FP2,False)
+   	Average(1,LakeQuant,FP2,False)
+   	Average(1,Quant,FP2,False)
+   	Average(1,UVA_YES,FP2,False)
+	  Average(1,UVB_YES,FP2,False)
+    Average(1,Press_mBar,IEEE4,False)
+   	Average(1,AirTemp_3m,FP2,False)
+   	Average(1,RH_3m,FP2,False)
+   	Average(1,AirTemp_5m,FP2,False)
+   	Average(1,RH_5m,FP2,False)
+   	'Average(1,WS_5m,FP2,False) same as the wind speed in the windvector 
+   	WindVector (1,WS_5m,WindDir,FP2,False,0,0,0)
+   	FieldNames ("mean_wind_speed_5m, mean_wind_direction_5m, std_wind_dir")
+   	'Sample(1,WindDir,FP2) meanless to sample once and hour
+   	Totalize(1,Rain_mm,FP2,False)
+    Totalize(1,Rain2_mm,FP2,False)
+EndTable
+
+DataTable(ThreeHourly,True,-1)
+ 'Three-Hourly Measurements
+ 	DataInterval(0,3,Hr,10)
+ 	CardOut(0,-1)
+    Sample(4,rTime(),FP2)
+    Average(1,Batt_Volt,FP2,False)
+    Average(1,MplexRTemp_C,FP2,False)
+  	Average(18,MplexTemp_C(),FP2,False)
+  	Average(1,LakeTemp_C,FP2,False)
+ 		Average(1,LakeLvl_cm,IEEE4,False)
+ 		Average(1,Evap_Depth,fp2,True)
+EndTable
+  	
+DataTable(Daily,True,-1)
+ 'Daily Measurements
+  DataInterval(0,1,Day,0)
+  CardOut(0,-1)
+    Sample( 9, rTime(), FP2 )             
+    Average(1,Batt_Volt,FP2,False)
+    Totalize(1,Rain_mm,FP2,False)
+    Totalize(1,Rain2_mm,FP2,False)
+    Average(1,AirTemp_5m,FP2,False)
+  	Maximum(1,AirTemp_5m,FP2,False,True)
+  	Minimum(1,AirTemp_5m,FP2,False,True)
+    Average(1,AirTemp_3m,FP2,False)
+  	Maximum(1,AirTemp_3m,FP2,False,True)
+  	Minimum(1,AirTemp_3m,FP2,False,True)
+  	Maximum(1,WS_5m,FP2,False,True)
+  	Average(1,WS_5m,FP2,False)
+EndTable
+
+'Main Program
+BeginProg
+      Scan(60,Sec,1,0)
+      RealTime(rTime())
+
+		'Default Datalogger Battery Voltage measurement Batt_Volt:
+		  Battery(Batt_Volt)
+
+		'CMP6 Pyranometer measurements SlrkJ and SlrkW. New installed Aug 2008:
+		'Sensitivity: 16.27 uV/W/m2
+		  VoltDiff(SolarkW,1,mV50,1,True,0,_60Hz,1,0)
+		  If SolarkW<0 Then SolarkW=0
+		  SolarkJ=SolarkW*0.30731
+		  SolarkW=SolarkW*0.06146
+		  
+		'Li-Cor Quantum. Model LI-190SB. Quantum measure photosynthetically active radiation (PAR) in mmol s-1 m-2. 
+	  	VoltDiff(Quant,1,mV20,2,1,0,_60Hz,200,0)
+	  		
+		'Li-Cor Underwater Quantum. LI-192SB. Accurate measurement of PAR in Aquatic systems.
+	  	VoltDiff(LakeQuant,1,mV20,9,1,0,_60Hz,475.75,0)
+	  
+	  'Differential Voltage measurements UVA_YES Watts/m2
+	  ' 2010-07-01 Werner Eugster:
+	  '   changed do differential volt reading, channel from 1 SE to 12 DIFF
+	  '   changed multiplier from 0.029 to 0.02902
+	   	VoltDiff(UVA_YES,1,mV5000,12,True ,0,_60Hz,0.02902,0)
+		
+		'Differential Voltage measurements UVB_YES Watts/m2
+		' 2010-07-01 Werner Eugster:
+		'   changed do differential volt reading, channel from 2 SE to 13 DIFF
+		'   changed multiplier from 0.0206 to 0.00206
+	  	VoltDiff(UVB_YES,1,mV5000,13,True,0,_60Hz,0.00206,0.0)
+	
+		'CS420/CS425 Druck PDCR 1830/1230 Pressure Tansducer (6-wire) measurement Lvl_cm:
+		'Requires 2 VoltDiff channels: 3 and 4. VoltDiff channels MUST be sequential.
+		  BrFull6W(LakeLvl_cm,1,mV5000,mV50,3,Vx4,1,5000,True,True,0,_60Hz,71.743,0)	
+
+    '107 Temperature Probe measurement for Lake Temp_C - new Installed Aug 2008:
+    'Sitting in bucket with ice water - readings: 0.2 deg C.
+		  Therm107(LakeTemp_C,1,9,Vx1,0,_60Hz,1.0,0.0)
+		  
+	  'CS100 Barometric Pressure Sensor measurement Press_mbar:
+	  	If IfTime(59,60,Min) Then PortSet(3,1)
+	  	If IfTime(0,60,Min) Then
+		  	VoltSe(Press_mBar,1,mV5000,10,1,0,_60Hz,0.2,600.0)
+	  		Press_mBar=Press_mBar*1.0
+	  		PortSet(3,0)
+	  	EndIf
+	 
+	  'HMP45C at 5m (7-wire) Temperature & Relative Humidity Sensor measurements AirTemp and RH:
+	  	PortSet(6,1)
+	  	Delay(0,150,mSec)
+	  	VoltSe(AirTemp_5m,1,mV1000,11,0,0,_60Hz,0.1,-40.0)
+	  	VoltSe(RH_5m,1,mV1000,12,0,0,_60Hz,0.1,0)
+	  	PortSet(6,0)
+	  	If RH_5m>100 AND RH_5m<108 Then RH_5m=100
+	  
+	   ''RM Young 41382VF Temperature & Relative Humidity Sensor at 3m measurements AirTemp and RH:
+      'VoltDiff(AirTemp_3m,1,mV1000,10,True,0,_60Hz,0.2,-50)
+      'AirTemp_3m=(AirTemp_3m-32)*0.5555555
+      'VoltDiff(RH_3m,1,mV1000,11,True,0,_60Hz,0.1,0)
+	    'If RH_3m>100 AND RH_3m<108 Then RH_3m=100
+
+      'RM Young 41382VC Temperature & Relative Humidity Sensor at 3m measurements AirTemp and RH:
+      VoltDiff(AirTemp_3m,1,mV1000,10,True,0,_60Hz,0.1,-50.0)
+      VoltDiff(RH_3m,1,mV1000,11,True,0,_60Hz,0.1,0)
+	    If RH_3m>100 AND RH_3m<108 Then RH_3m=100
+
+
+    '024A Wind Direction Sensor measurement WindDir:
+		  BrHalf(WindDir,1,mV5000,15,Vx1,1,5000,True,2000,250,735.140,0)
+		  
+	  		If WindDir>=360 Then WindDir=0
+	      
+    '014A Wind Speed Sensor measurement at 5m WS_5m:
+    ' Installed sensor #K2064 Was recalibrated 2006 but never installed Jim L 16Aug10
+      PulseCount(WS_5m,1,2,2,1,0.8,0.447)
+      If WS_5m=0.447 Then WS_5m=0
+            
+		'OTT Pluvio 250mm with ring heater Rain Gauge measurement Rain_mm:
+		'18Aug2010 Jim L  Replaced with an OTT Pluvio2 200mm old one was giving count when there was not snow.
+		'22Aug10 Jim L The Pluvio2 has.1mm per pulse ; changed multipler to .1 from .01
+		'PulseCount(Rain_mm,1,3,2,0,0.1,0) goes with unheated pluvio
+		'22Sept12 Jessie reinstalled the older pluvio and changed the offset back to 0.01
+		 'OTT Pluvio 250mm with ring heater Rain Gauge measurement Rain_mm:  	
+	  	PulseCount(Rain_mm,1,3,2,0,0.01,0)
+	  
+	  'Rain tipping bucket measurement Rain2_mm:
+	  	PulseCount(Rain2_mm,1,4,2,0,0.254,0)
+	  	  	
+    'AM25T Multiplexer
+    'Reference Temperature measurement RTemp_C on the AM25T Multiplexer:
+      AM25T(MplexRTemp_C,0,mV20C,1,7,TypeT,MplexRTemp_C,2,1,Vx2,True,0,250,1,0)
+    'Type T (copper-constantan) Thermocouple measurements Temp_C(1) on the AM25T Multiplexer. For Evaporation Pan and Soil Temp Thermocouples:
+      AM25T(MplexTemp_C(1),18,mV20C,1,7,TypeT,MplexRTemp_C,2,1,Vx2,True,0,_60Hz,1,0)
+    
+    'Evaporation Pan measurement Evap_Depth
+     'Replace the previous statements, a separate excite and then read; not correct way to measure resistance  
+      BrHalf (Evap_Depth,1,mV5000,16,Vx3,1,5000,True ,0,250,0.03121,-1.1247)
+    
+		'Call Data Tables and Store Data
+		  CallTable(FiveMinutes)
+		  CallTable(Hourly)
+		  CallTable(Daily)
+		  CallTable(ThreeHourly)	  
+	NextScan
+EndProg
